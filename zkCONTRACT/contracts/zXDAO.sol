@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
+import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
 
 contract zXDAO {
   struct Member {
@@ -31,12 +32,17 @@ contract zXDAO {
   mapping(address => bool) public registered;
   mapping(uint256 => bool) public completed;
 
+  ISemaphore public semaphore;
+
+  address public semaphoreAddress;
 
   function checkRegistered() public view returns (bool) {
     return registered[msg.sender];
   }
 
-
+  constructor(address _semaphoreAddress) {
+    semaphoreAddress = _semaphoreAddress;
+  }
 
   function proposalList() public view returns (Proposals[] memory) {
     return proposals;
@@ -45,12 +51,15 @@ contract zXDAO {
   function register() public {
     require(registered[msg.sender] == false, "Already Registered");
     _memberCount++;
-    members.push(Member(_memberCount,msg.sender));
+    members.push(Member(_memberCount, msg.sender));
     registered[msg.sender] = true;
   }
 
-
-  function addProposal(string memory title, uint256 timeEnd) public {
+  function addProposal(
+    string memory title,
+    uint256 timeEnd,
+    uint256 depth
+  ) public {
     require(registered[msg.sender] == true, "Not registered");
     proposals.push(
       Proposals(
@@ -68,13 +77,18 @@ contract zXDAO {
       )
     );
     _proposalId++;
+    semaphore.createGroup(_proposalId, depth, address(this));
   }
-  
 
-  function voteOnproposal(
+  function joinProposal(
     uint256 proposalId,
-    uint256 vote
+    uint256 identitityCommitment
   ) public {
+    require(proposals[proposalId].status == true, "Not Active");
+    require(registered[msg.sender] == true, "Not a member");
+  }
+
+  function voteOnproposal(uint256 proposalId, uint256 vote) public {
     require(proposals[proposalId].status == true, "Not Active");
     if (vote == 1) {
       proposals[proposalId].forVotes++;
@@ -97,5 +111,4 @@ contract zXDAO {
       }
     }
   }
-
 }
