@@ -1,0 +1,77 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/chiranjeevmishra/Desktop/WEB-3/ethindia-2023-proj/zkCONTRACT/contracts/zXDAO.sol": {
+      "lastModificationDate": 1702095466239,
+      "contentHash": "d2d076d5d4f8b236fe53f3cace6396da",
+      "sourceName": "contracts/zXDAO.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@semaphore-protocol/contracts/interfaces/ISemaphore.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.4"
+      ],
+      "artifacts": [
+        "zXDAO"
+      ]
+    },
+    "/Users/chiranjeevmishra/Desktop/WEB-3/ethindia-2023-proj/zkCONTRACT/node_modules/@semaphore-protocol/contracts/interfaces/ISemaphore.sol": {
+      "lastModificationDate": 1702055164169,
+      "contentHash": "3248c49905e3372089ce0a4e9c1834c7",
+      "sourceName": "@semaphore-protocol/contracts/interfaces/ISemaphore.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.4"
+      ],
+      "artifacts": [
+        "ISemaphore"
+      ]
+    }
+  }
+}
