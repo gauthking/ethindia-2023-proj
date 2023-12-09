@@ -10,6 +10,7 @@ import nltk
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 import numpy as np
+import requests
 
 
 app = FastAPI()
@@ -52,7 +53,11 @@ class DataParamsTypes(BaseModel):
         arbitrary_types_allowed = True
 
 class PredictionParams(BaseModel):
-    beh_model :str
+    # beh_model :str
+    proposal:str
+    user_address:str
+
+main_api_service_url = "http://zxdao-env.eba-qwpcnavq.us-east-1.elasticbeanstalk.com/"
 
 def get_sentiment_scores(text):
     return analyzer.polarity_scores(text)
@@ -112,8 +117,13 @@ async def post_sentiment_data(dataParams:DataParamsTypes):
 @app.post("/getPredictedValues")
 async def get_predicted_sentiment(sentimentParams:PredictionParams):
     # get the user_char_array from the db : res, use requests module
-    json_result = 'pull the data from the api'
-    df_restored = pd.read_json(sentimentParams.beh_model, orient='records', convert_dates=False)
+    api_url = main_api_service_url + "/api/users/get"
+    req_body = {"user_address":sentimentParams.user_address}
+
+    response = requests.post(api_url, req_body)
+
+    json_result = json.loads(response.user.user_characteristics_beh_df)
+    df_restored = pd.read_json(json_result, orient='records', convert_dates=False)
 
     df_final = df_restored
 
@@ -143,7 +153,7 @@ async def get_predicted_sentiment(sentimentParams:PredictionParams):
         print(f'{feature}: {importance}')
 
     # Sentiment analysis for a new proposal
-    new_proposal_text = "do you want to be part of this dao"
+    new_proposal_text = sentimentParams.proposal
     analyzer = SentimentIntensityAnalyzer()
     new_proposal_sentiment = get_sentiment_scores(new_proposal_text)
 
