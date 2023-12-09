@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from '../buttons/Button';
 import Image from 'next/image';
 import { IoIosArrowDown } from "react-icons/io";
 import { MdOutlineArrowOutward } from "react-icons/md";
+import { BlockchainConfig } from '@/app/context/blockchainContext';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -10,7 +11,7 @@ const Navbar = () => {
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
-
+const {currentAccount,connectWallet}=useContext(BlockchainConfig)
   return (
     <div className='h-[52px] m-8 p-4 mt-2 mb-0 flex justify-between items-center'>
       <div className='flex items-center'>
@@ -49,7 +50,7 @@ const Navbar = () => {
         <div className='flex items-center gap-2 transition-opacity duration-300 ease-in-out hover:opacity-70'>
           <a href="/form">Learn</a> <IoIosArrowDown />
         </div>
-        <Button text='Connect' />
+        {currentAccount ?  <Button text='Connected' />:  <Button onClick={connectWallet} text='Connect' />}
       </div>
 
       {/* Mobile Menu */}

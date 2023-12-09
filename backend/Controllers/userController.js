@@ -1,8 +1,5 @@
 //importing modules
-const bcrypt = require("bcrypt");
 const db = require("../Models");
-const jwt = require("jsonwebtoken");
-const { Op } = require("sequelize");
 
 // Assigning users to the variable User
 const User = db.users;
@@ -13,19 +10,18 @@ const addUser = async (req, res) => {
   try {
     const {
       user_address,
-      
       user_characteristics_beh_df,
       password
     } = req.body;
     //  console.log("adding user....",time);
-    const cipher = crypto.createCipher('aes-256-cbc', KEY);
+    const cipher = crypto.createCipher('aes-256-cbc', process.env.KEY);
     let encryptedData = cipher.update(password, 'utf8', 'hex');
     encryptedData += cipher.final('hex');
     const data = {
       user_address: user_address,
-      user_characteristics_beh_df:user_characteristics_beh_df,
-      joined_groups:[],
-      password:password
+      user_characteristics_beh_df: user_characteristics_beh_df,
+      joined_groups: [],
+      password: password
     };
 
     //saving the user
@@ -35,9 +31,9 @@ const addUser = async (req, res) => {
     //generate token with the user's id and the secretKey in the env file
     // set cookie with the token generated
     if (user) {
-     
 
-    
+
+
       //send users details
       return res.status(201).send(user);
     } else {
@@ -55,23 +51,23 @@ const addUserToProposal = async (req, res) => {
       proposal_id
     } = req.body;
     //  console.log("adding user....",time);
-   
+
 
     //saving the user
-  const user = await User.findOne({
-    where: {
-      user_address:  user_address,
-    },
-  }); 
+    const user = await User.findOne({
+      where: {
+        user_address: user_address,
+      },
+    });
 
     //if user details is captured
     //generate token with the user's id and the secretKey in the env file
     // set cookie with the token generated
     if (user) {
-     
+
       user.joined_groups.push(proposal_id);
       await user.save();
-    
+
       //send users details
       return res.status(201).send('OK');
     } else {
@@ -88,12 +84,12 @@ const addUserToProposal = async (req, res) => {
 
 const getuser = async (req, res) => {
   try {
-    const {  user_address } = req.body;
+    const { user_address } = req.body;
 
     //find a user by their email
     const user = await User.findOne({
       where: {
-        user_address:  user_address,
+        user_address: user_address,
       },
     });
     // console.log("data lofg", user);
@@ -102,9 +98,9 @@ const getuser = async (req, res) => {
     if (user) {
 
       //if password is the same
-      
-        return res.status(201).send(user);
-     
+
+      return res.status(201).send(user);
+
     } else {
       return res.status(401).send("Authentication failed");
     }
@@ -114,5 +110,5 @@ const getuser = async (req, res) => {
 };
 
 module.exports = {
-  addUser,getuser,addUserToProposal
+  addUser, getuser, addUserToProposal
 };

@@ -4,7 +4,9 @@ import Landing from './components/landing/Landing'
 import Navbar from './components/header/Navbar'
 import Footer from './components/footers/Footer'
 
+
 const page = () => {
+
   return (
     <div>
       <Navbar />
