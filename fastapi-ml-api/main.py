@@ -25,29 +25,28 @@ app.add_middleware(
     allow_headers = ["*"]
 )
 
-class TextProposal(BaseModel):
-    question: str
-    res: str
+# class TextProposal(BaseModel):
+#     question: str
+#     res: str
 
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
+#     @classmethod
+#     def __get_validators__(cls):
+#         yield cls.validate
 
-    @classmethod
-    def validate(cls, value):
-        if not isinstance(value, dict):
-            raise ValueError("Must be a dictionary")
-        # Your validation logic here
-        return cls(**value)
+#     @classmethod
+#     def validate(cls, value):
+#         if not isinstance(value, dict):
+#             raise ValueError("Must be a dictionary")
+#         # Your validation logic here
+#         return cls(**value)
 
-class CorrelationProposal(BaseModel):
-    proposal: str
-    vote: int
+# class CorrelationProposal(BaseModel):
+#     proposal: str
+#     vote: int
 
 class DataParamsTypes(BaseModel):
     user_id: str
-    textproposal: list[TextProposal]
-    correlation_proposal: list[CorrelationProposal]
+    characteristics_questions: str
 
     class Config:
         arbitrary_types_allowed = True
@@ -64,8 +63,14 @@ def extract_sentiment_features(sentiment_dict):
 @app.post("/postSentiment")
 async def post_sentiment_data(dataParams:DataParamsTypes):
     print(dataParams)
-    questions = [textproposal.question for textproposal in dataParams.textproposal]
-    text_responses = [textproposal.res for textproposal in dataParams.textproposal]
+    # Parse the stringified JSON array
+    characteristics_dataArray = json.loads(dataParams.characteristics_questions)
+    
+    # Take only the first 10 entries
+    characteristics_data = characteristics_dataArray[:10]
+    print(characteristics_data)
+    questions = [textproposal['question'] for textproposal in characteristics_data]
+    text_responses = [textproposal['res'] for textproposal in characteristics_data]
     df1 = pd.DataFrame(questions, columns=['Questions'])
     df1['User_Responses'] = text_responses
     df1.columns = ['questions', 'User_1']
@@ -76,10 +81,12 @@ async def post_sentiment_data(dataParams:DataParamsTypes):
     result_df=df1
     vader_df = result_df.filter(like='_sentiment').copy()
 
-    proposals = [belproposals.proposal for belproposals in dataParams.correlation_proposal]
-    proposal_votes = [belproposals.vote for belproposals in dataParams.correlation_proposal]
-
+    characteristics_data1 = characteristics_dataArray[10:20]
+    proposals = [belproposals['proposal'] for belproposals in characteristics_data1]
+    proposal_votes = [belproposals['vote'] for belproposals in characteristics_data1]
+    print("proposals - ", proposals)
     df2 = pd.DataFrame(proposals, columns=['proposals'])
+    print(df2)
     df2['vote'] = proposal_votes
 
     df_final = pd.concat([df2, vader_df.reset_index(drop=True)], axis=1)
