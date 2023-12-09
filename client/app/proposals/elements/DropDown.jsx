@@ -1,17 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const DropDown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+
+  useEffect(() => {
+    console.log('Initial Selected Option:', selectedOption);
+  }, []); // Log initial value only once
+
+  useEffect(() => {
+    if (selectedOption !== null) {
+      console.log('Selected Option:', selectedOption);
+      // You can perform additional actions based on the selected option here
+    }
+  }, [selectedOption]);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
   const handleOptionSelect = (option) => {
-    setSelectedOption(option);
+    const selectedValue = option === 'Yes' ? 1 : 0;
+    setSelectedOption(selectedValue);
     setIsOpen(false);
-    // You can perform additional actions based on the selected option here
   };
 
   return (
@@ -22,7 +33,7 @@ const DropDown = () => {
         onClick={toggleDropdown}
         className="hs-dropdown-toggle py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
       >
-        {selectedOption ? selectedOption : 'Choose'}
+        {selectedOption !== null ? (selectedOption === 1 ? 'Yes' : 'No') : 'Choose'}
         <svg
           className={`hs-dropdown-open:rotate-180 w-4 h-4 transition-transform duration-300 ${
             isOpen ? 'rotate-180' : ''
