@@ -18,7 +18,7 @@ const addUser = async (req, res) => {
       password
     } = req.body;
     //  console.log("adding user....",time);
-    const cipher = crypto.createCipher('aes-256-cbc', KEY);
+    const cipher = crypto.createCipher('aes-256-cbc', process.env.KEY);
     let encryptedData = cipher.update(password, 'utf8', 'hex');
     encryptedData += cipher.final('hex');
     const data = {
