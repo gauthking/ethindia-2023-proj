@@ -1,22 +1,16 @@
 const hre = require("hardhat");
 
+require("dotenv").config()
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
 
-  const lockedAmount = hre.ethers.parseEther("0.001");
-
-  const lock = await hre.ethers.deployContract("Lock", [unlockTime], {
-    value: lockedAmount,
-  });
+  const _semaphoreAddress = "0x74Cd45F69d0eE2aBad147bbD882f33b72992D872";
+  const lock = await hre.ethers.deployContract("zXDAO", [
+    _semaphoreAddress,
+  ]);
 
   await lock.waitForDeployment();
 
-  console.log(
-    `Lock with ${ethers.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.target}`
-  );
+  console.log(lock);
 }
 
 main().catch((error) => {

@@ -21,6 +21,7 @@ contract zXDAO {
     uint256 timeInitiated;
     uint256 totalVotes;
     uint256 tillTime;
+    uint256 regtime;
   }
 
   Member[] public members;
@@ -58,7 +59,8 @@ contract zXDAO {
   function addProposal(
     string memory title,
     uint256 timeEnd,
-    uint256 depth
+    uint256 depth,
+    uint256 regtime
   ) public {
     require(registered[msg.sender] == true, "Not registered");
     proposals.push(
@@ -73,7 +75,8 @@ contract zXDAO {
         true,
         block.timestamp,
         0,
-        timeEnd
+        timeEnd,
+        regtime
       )
     );
     _proposalId++;
@@ -83,6 +86,7 @@ contract zXDAO {
   function joinProposal(uint256 proposalId, uint256 identityCommitment) public {
     require(proposals[proposalId].status == true, "Not Active");
     require(registered[msg.sender] == true, "Not a member");
+    require(proposals[proposalId].regtime < block.timestamp , "Reg Time over");
     semaphore.addMember(proposalId, identityCommitment);
   }
 
