@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { data } from "../../data/data";
-import Navbar from "../components/header/Navbar";
+import JoinNavbar from "../components/header/JoinNavbar";
 import { VscActivateBreakpoints } from "react-icons/vsc";
 import { FaPlus } from "react-icons/fa";
 
@@ -34,7 +34,7 @@ const page = () => {
 
   return (
     <div className="min-h-screen text-white">
-      <Navbar />
+      <JoinNavbar />
       <div className="p-4">
         <div className="w-full m-auto p-4 border rounded-lg overflow-y-auto">
           <div className="my-3 p-2 grid md:grid-cols-3 sm:grid-cols-3 grid-cols-3 items-center justify-between cursor-pointer">
@@ -65,7 +65,7 @@ const page = () => {
                   <div className="sm:text-left text-right">
                     {/* Enable the button only if the deadline hasn't been reached */}
                     {new Date() < proposalDeadline ? (
-                      <button className="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded flex items-center gap-2">
+                      <button className="bg-green-500 hover:bg-green-600 text-black px-2 py-1 rounded flex items-center gap-2">
                         Join <FaPlus />
                       </button>
                     ) : (
@@ -85,9 +85,3 @@ const page = () => {
 };
 
 export default page;
-
-
-<title>
-    datepicker - end date
-    registration time
-</title>
