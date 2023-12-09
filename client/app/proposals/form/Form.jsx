@@ -1,20 +1,21 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import SignUpInfo from './SignUpInfo';
 import Questions from './Questions';
 import ProposalQuestions from './ProposalQuestions';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { Message_data } from '@/app/context/context';
 
 const Form = () => {
   const [page, setPage] = useState(0);
-
+const {handleUserSubmit,formSubmitting}=useContext(Message_data);
   const FormTitles = ["", "", "", ""];
 
   const PageDisplay = () => {
     if (page === 0) {
       return <SignUpInfo />;
     } else if (page === 1) {
-      return <Questions />;
+      return <Questions  setPage={setPage} />;
     } else {
       return <ProposalQuestions />;
     }
@@ -42,7 +43,14 @@ const Form = () => {
               <FaArrowLeft />Back
             </span>
           </button>
-          <button
+    {page === FormTitles.length - 2 ?  <button  className='w-[89px] h-8 px-4 rounded border-2 border-[#12ff80] bg-[#12ff80] justify-center items-center gap-2.5 inline-flex'
+            disabled={formSubmitting}
+            
+            onClick={() => {
+              // setPage((currPage) => currPage + 1);
+              handleUserSubmit();
+            }}>{formSubmitting?"Submitting ...":"SUBMIT"}</button> :     <button
+          
             disabled={page === FormTitles.length - 1}
             className='w-[89px] h-8 px-4 rounded border-2 border-[#12ff80] bg-[#12ff80] justify-center items-center gap-2.5 inline-flex'
             onClick={() => {
@@ -52,7 +60,7 @@ const Form = () => {
             <span className="text-white text-base font-normal font-['Inter'] flex justify-center items-center gap-2">
               Next <FaArrowRight />
             </span>
-          </button>
+          </button>}
         </div>
       </div>
     </div>

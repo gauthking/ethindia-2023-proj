@@ -6,12 +6,12 @@ import { abi } from './api';
 
 const Addr = "0xf22d55bfFA001cb87c7bF3E74136FeAeb60989bA";
 const ABI=abi
-const fetchContract = (signerOrProvider) => new eth.Contract(MarketAddress, MarketAddressABI, signerOrProvider);
 
 export const BlockchainConfig = React.createContext();
 
 export const BlockchainProvider = ({ children }) => {
-  const nftCurrency = 'MATIC';
+    // const provider = new eth.Web3Provider(window.ethereum);
+
   const [currentAccount, setCurrentAccount] = useState('');
   // const {uploadArtOffChain} = useContext(FirebaseConfig)
   const connectWallet = async () => {
@@ -23,6 +23,15 @@ console.log('entered')
 
     setCurrentAccount(accounts[0]);
   };
+
+  const RegisterContract = async() =>{
+    const   provider = new eth.BrowserProvider(window.ethereum)
+    const signer =await provider.getSigner();
+  const contract =  new eth.Contract(Addr, ABI, signer);
+    const transaction = await contract.register();
+
+    await transaction.wait();
+  }
 
   const checkIfWalletIsConnect = async () => {
     if (!window.ethereum) return alert('Please install MetaMask.');
@@ -43,8 +52,9 @@ console.log('entered')
     <BlockchainConfig.Provider
       value={{
         connectWallet,
-        currentAccount
-      
+        currentAccount,
+        RegisterContract,
+
       }}
     >
       {children}

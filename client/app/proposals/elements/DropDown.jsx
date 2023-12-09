@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const DropDown = () => {
+const DropDown = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -21,6 +21,11 @@ const DropDown = () => {
 
   const handleOptionSelect = (option) => {
     const selectedValue = option === 'Yes' ? 1 : 0;
+    console.log(props.name,selectedValue)
+    props.setProposalData((prevData) => ({
+      ...prevData,
+      [props.name]: selectedValue,
+    }));
     setSelectedOption(selectedValue);
     setIsOpen(false);
   };

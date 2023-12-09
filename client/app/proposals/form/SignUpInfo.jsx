@@ -15,6 +15,7 @@ const SignUpInfo = () => {
           <div className='bg-[#1c1c1c] flex items-center justify-center p-4 rounded-md'>
             <div className='sign-up-container flex flex-col p-10'>
               <input
+              value={password}
                 type="password"
                 placeholder='Enter Password'
                 className='p-2 border w-[187px] h-8 rounded-md focus:outline-none focus:shadow-outline-blue text-black'

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import { Message_data } from '@/app/context/context';
+import React, { useContext, useState } from 'react';
 
-const Questions = () => {
-  const [inputArr, setInputArr] = useState([]);
+const Questions = (props) => {
+  const {inputArr, setInputArr} = useContext(Message_data)
   const [inputData, setInputData] = useState({
     question1: '',
     question2: '',
@@ -39,6 +40,8 @@ const Questions = () => {
       question9: '',
       question10: '',
     });
+    props.setPage((currPage) => currPage + 1);
+
   }
 
   return (
@@ -132,7 +135,7 @@ const Questions = () => {
                 className='p-2 border w-80 h-10 rounded-md focus:outline-none focus:shadow-outline-blue text-black'
               />
               <div className='pt-4 pb-2 text-gray-400 text-sm'>
-                8. Explain your criteria for supporting a proposal aimed at modifying the DAO's governance structure.
+                8. Explain your criteria for supporting a proposal aimed at modifying the DAO`&#39;`s governance structure.
               </div>
               <input
                 type="text"
