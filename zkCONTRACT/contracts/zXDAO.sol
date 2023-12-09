@@ -80,15 +80,20 @@ contract zXDAO {
     semaphore.createGroup(_proposalId, depth, address(this));
   }
 
-  function joinProposal(
-    uint256 proposalId,
-    uint256 identitityCommitment
-  ) public {
+  function joinProposal(uint256 proposalId, uint256 identityCommitment) public {
     require(proposals[proposalId].status == true, "Not Active");
     require(registered[msg.sender] == true, "Not a member");
+    semaphore.addMember(proposalId, identityCommitment);
   }
 
-  function voteOnproposal(uint256 proposalId, uint256 vote) public {
+  function voteOnproposal(
+    uint256 proposalId,
+    uint256 vote,
+    uint256 merkleTreeRoot,
+    uint256 nullifierHash,
+    uint256 externalNullifier,
+    uint256[8] calldata proof
+  ) public {
     require(proposals[proposalId].status == true, "Not Active");
     if (vote == 1) {
       proposals[proposalId].forVotes++;
@@ -97,6 +102,14 @@ contract zXDAO {
       proposals[proposalId].againstVotes++;
       proposals[proposalId].totalVotes++;
     }
+    semaphore.verifyProof(
+      proposalId,
+      merkleTreeRoot,
+      vote,
+      nullifierHash,
+      externalNullifier,
+      proof
+    );
   }
 
   function statusProposals() public payable {
