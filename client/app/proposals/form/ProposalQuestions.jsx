@@ -52,6 +52,11 @@ const ProposalQuestions = () => {
                 10. Upgrade DAO infrastructure for better scalability and adaptability.
               </div>
               <DropDown />
+              <div className='flex justify-center items-center p-8'>
+                <button className='bg-[#12ff80] text-[#1c1c1c] font-bold rounded-md px-4 py-2 mt-4'>
+                  Submit
+                </button>
+              </div>
             </div>
           </div>
         </div>
