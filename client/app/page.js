@@ -1,8 +1,8 @@
 "use client"
 import React from 'react'
-import Landing from './landing/Landing'
-import Navbar from './header/Navbar'
-import Footer from './footers/Footer'
+import Landing from './components/landing/Landing'
+import Navbar from './components/header/Navbar'
+import Footer from './components/footers/Footer'
 
 const page = () => {
   return (
