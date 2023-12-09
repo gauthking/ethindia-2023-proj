@@ -2,6 +2,7 @@ import React from 'react'
 import DropDown from '../elements/DropDown'
 
 const ProposalQuestions = () => {
+
   return (
     <div className='flex items-center justify-center mt-20'>
       <div className='flex flex-col items-center'>

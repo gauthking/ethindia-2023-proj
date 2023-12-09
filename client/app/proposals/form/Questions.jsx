@@ -17,6 +17,7 @@ const Questions = () => {
 
   function handleChange(e) {
     const { name, value } = e.target;
+    console.log(name,value)
     setInputData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -69,8 +70,8 @@ const Questions = () => {
               </div>
               <input
                 type="text"
-                name="question1"
-                value={inputData.question1}
+                name="question2"
+                value={inputData.question2}
                 placeholder='Enter Here'
                 onChange={handleChange}
                 className='p-2 border w-80 h-10 rounded-md focus:outline-none focus:shadow-outline-blue text-black'
@@ -80,8 +81,8 @@ const Questions = () => {
               </div>
               <input
                 type="text"
-                name="question1"
-                value={inputData.question1}
+                name="question3"
+                value={inputData.question3}
                 placeholder='Enter Here'
                 onChange={handleChange}
                 className='p-2 border w-80 h-10 rounded-md focus:outline-none focus:shadow-outline-blue text-black'
@@ -91,8 +92,8 @@ const Questions = () => {
               </div>
               <input
                 type="text"
-                name="question1"
-                value={inputData.question1}
+                name="question4"
+                value={inputData.question4}
                 placeholder='Enter Here'
                 onChange={handleChange}
                 className='p-2 border w-80 h-10 rounded-md focus:outline-none focus:shadow-outline-blue text-black'
@@ -102,8 +103,8 @@ const Questions = () => {
               </div>
               <input
                 type="text"
-                name="question1"
-                value={inputData.question1}
+                name="question5"
+                value={inputData.question5}
                 placeholder='Enter Here'
                 onChange={handleChange}
                 className='p-2 border w-80 h-10 rounded-md focus:outline-none focus:shadow-outline-blue text-black'
@@ -113,8 +114,8 @@ const Questions = () => {
               </div>
               <input
                 type="text"
-                name="question1"
-                value={inputData.question1}
+                name="question6"
+                value={inputData.question6}
                 placeholder='Enter Here'
                 onChange={handleChange}
                 className='p-2 border w-80 h-10 rounded-md focus:outline-none focus:shadow-outline-blue text-black'
@@ -124,8 +125,8 @@ const Questions = () => {
               </div>
               <input
                 type="text"
-                name="question1"
-                value={inputData.question1}
+                name="question7"
+                value={inputData.question7}
                 placeholder='Enter Here'
                 onChange={handleChange}
                 className='p-2 border w-80 h-10 rounded-md focus:outline-none focus:shadow-outline-blue text-black'
@@ -135,8 +136,8 @@ const Questions = () => {
               </div>
               <input
                 type="text"
-                name="question1"
-                value={inputData.question1}
+                name="question8"
+                value={inputData.question8}
                 placeholder='Enter Here'
                 onChange={handleChange}
                 className='p-2 border w-80 h-10 rounded-md focus:outline-none focus:shadow-outline-blue text-black'
@@ -146,8 +147,8 @@ const Questions = () => {
               </div>
               <input
                 type="text"
-                name="question1"
-                value={inputData.question1}
+                name="question9"
+                value={inputData.question9}
                 placeholder='Enter Here'
                 onChange={handleChange}
                 className='p-2 border w-80 h-10 rounded-md focus:outline-none focus:shadow-outline-blue text-black'
@@ -157,8 +158,8 @@ const Questions = () => {
               </div>
               <input
                 type="text"
-                name="question1"
-                value={inputData.question1}
+                name="question10"
+                value={inputData.question10}
                 placeholder='Enter Here'
                 onChange={handleChange}
                 className='p-2 border w-80 h-10 rounded-md focus:outline-none focus:shadow-outline-blue text-black'
