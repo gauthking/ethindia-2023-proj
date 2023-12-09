@@ -2,6 +2,7 @@
 import React from 'react';
 import Navbar from '../components/header/Navbar';
 import Card from './card/Card';
+import CardClone from './card/CardClone';
 import Image from 'next/image';
 
 const page = () => {
@@ -23,7 +24,7 @@ const page = () => {
           </div>
           <div className='flex gap-8 justify-center pt-10'>
             <Card text={"General"} description={"Discover and discuss a variety of topics"}/>
-            <Card text={"Proposals"} description={"Explore and contribute to innovative project ideas and suggestions"}/>
+            <CardClone text={"Proposals"} description={"Explore and contribute to innovative project ideas and suggestions"}/>
           </div>
         </div>
         {/* Right half for image */}
