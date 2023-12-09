@@ -3,14 +3,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from sklearn.model_selection import train_test_split
 import json
 import pandas as pd
 import nltk
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+import numpy as np
 
 
 app = FastAPI()
 analyzer = SentimentIntensityAnalyzer()
-nltk.download('vader_lexicon')
+# nltk.download('vader_lexicon')
 
 origins = ["*"]
 app.add_middleware(
@@ -22,17 +26,34 @@ app.add_middleware(
 )
 
 class TextProposal(BaseModel):
-    question:str
-    res:str
+    question: str
+    res: str
+
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, value):
+        if not isinstance(value, dict):
+            raise ValueError("Must be a dictionary")
+        # Your validation logic here
+        return cls(**value)
 
 class CorrelationProposal(BaseModel):
-    proposal:str
-    vote:int
+    proposal: str
+    vote: int
 
 class DataParamsTypes(BaseModel):
-    user_id:str
-    textproposal:[TextProposal]
-    correlation_proposal:[CorrelationProposal]
+    user_id: str
+    textproposal: list[TextProposal]
+    correlation_proposal: list[CorrelationProposal]
+
+    class Config:
+        arbitrary_types_allowed = True
+
+class PredictionParams(BaseModel):
+    beh_model :str
 
 def get_sentiment_scores(text):
     return analyzer.polarity_scores(text)
@@ -53,7 +74,6 @@ async def post_sentiment_data(dataParams:DataParamsTypes):
         df1[f'{column}_sentiment'] = df1[column].apply(get_sentiment_scores)
 
     result_df=df1
-    column_types = result_df.dtypes
     vader_df = result_df.filter(like='_sentiment').copy()
 
     proposals = [belproposals.proposal for belproposals in dataParams.correlation_proposal]
@@ -64,22 +84,74 @@ async def post_sentiment_data(dataParams:DataParamsTypes):
 
     df_final = pd.concat([df2, vader_df.reset_index(drop=True)], axis=1)
 
+    # Apply the function to create sentiment features columns
+    df_final[['questions_neg', 'questions_neu', 'questions_pos', 'questions_compound']] = pd.DataFrame(
+        df_final['questions_sentiment'].apply(extract_sentiment_features).tolist(), index=df_final.index)
 
+    df_final[['User_1_neg', 'User_1_neu', 'User_1_pos', 'User_1_compound']] = pd.DataFrame(
+        df_final['User_1_sentiment'].apply(extract_sentiment_features).tolist(), index=df_final.index)
+    
+    json_result = df_final.to_json(orient="records", default_handler=str)
+
+    return JSONResponse(content=json_result)
+
+
+
+    #convert the dataframe into json type and send back to the client... give the code for it 
     # Return the payload as JSON response
     # return JSONResponse(content=payload)
 
 
 @app.post("/getPredictedValues")
-async def get_predicted_sentiment():
+async def get_predicted_sentiment(sentimentParams:PredictionParams):
     # get the user_char_array from the db : res, use requests module
-    result_list = res.data.user_characteristics_beh_df
-    parsed_values = []
+    json_result = 'pull the data from the api'
+    df_restored = pd.read_json(sentimentParams.beh_model, orient='records', convert_dates=False)
 
-    for item in result_list:
-        try: 
-            parsed_values.append(json.loads(item))
-        except json.JSONDecodeError as e:
-            # Handle the case where the string cannot be decoded as JSON
-            print(f"Error decoding JSON: {e}")
+    df_final = df_restored
+
+    features = [
+    'questions_neg', 'questions_neu', 'questions_pos', 'questions_compound',
+    'User_1_neg', 'User_1_neu', 'User_1_pos', 'User_1_compound'
+        ]
+    target = 'vote'
+
+    # Split the data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(df_final[features], df_final[target], test_size=0.2,    random_state=42)
+    # Initialize the Random Forest classifier with the best hyperparameters
+    best_rf_model = RandomForestClassifier(
+    max_depth=None, min_samples_leaf=2, min_samples_split=5, n_estimators=50, random_state=42)
+    best_rf_model.fit(X_train, y_train)
+
+    # Make predictions on the test set
+    y_pred = best_rf_model.predict(X_test)
+
+    # Evaluate the model accuracy
+    accuracy = accuracy_score(y_test, y_pred)
+    print(f'Model Accuracy: {accuracy:.2%}')
+
+    # Display feature importances
+    feature_importances = best_rf_model.feature_importances_
+    for feature, importance in zip(features, feature_importances):
+        print(f'{feature}: {importance}')
+
+    # Sentiment analysis for a new proposal
+    new_proposal_text = "do you want to be part of this dao"
+    analyzer = SentimentIntensityAnalyzer()
+    new_proposal_sentiment = get_sentiment_scores(new_proposal_text)
+
+    # Extract sentiment features for the new proposal
+    new_proposal_features = extract_sentiment_features(new_proposal_sentiment) + \
+                        extract_sentiment_features(new_proposal_sentiment)    
+
+    new_proposal_features_2d = np.array(new_proposal_features).reshape(1, -1)
+    
+    # Use the trained model for prediction
+    predicted_vote = best_rf_model.predict(new_proposal_features_2d)
+
+    predicted_vote_list = predicted_vote.tolist()
+
+
+    return JSONResponse(content=predicted_vote_list)
 
 
