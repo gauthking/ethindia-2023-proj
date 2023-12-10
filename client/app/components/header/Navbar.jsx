@@ -48,7 +48,7 @@ const {currentAccount,connectWallet}=useContext(BlockchainConfig)
           <a href="/forum">Forum</a> <IoIosArrowDown />
         </div>
         <div className='flex items-center gap-2 transition-opacity duration-300 ease-in-out hover:opacity-70'>
-          <a href="/form">Learn</a> <IoIosArrowDown />
+          <a href="/proposals">Learn</a> <IoIosArrowDown />
         </div>
         {currentAccount ?  <Button text='Connected' />:  <Button onClick={connectWallet} text='Connect' />}
       </div>
