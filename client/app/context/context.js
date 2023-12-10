@@ -15,6 +15,7 @@ const qns=["What motivates you to participate in a DAO","How would you describe 
 
 const {currentAccount,RegisterContract} = useContext(BlockchainConfig);
     // await handleUserSubmit();
+    const [title, setTitle] = useState();
 const [formSubmitting, setFormSubmitting] = useState(false);
     const handleUserSubmit = async()=>{
       setFormSubmitting(true);
@@ -49,7 +50,7 @@ const [formSubmitting, setFormSubmitting] = useState(false);
 
     }
     return (
-      <Message_data.Provider value={{ username, setUsername, password, setPassword ,inputArr,setInputArr,handleUserSubmit,proposalArr,formSubmitting, setFormSubmitting,   setProposalArr}}>
+      <Message_data.Provider value={{ username,title, setTitle, setUsername, password, setPassword ,inputArr,setInputArr,handleUserSubmit,proposalArr,formSubmitting, setFormSubmitting,   setProposalArr}}>
         {children}
       </Message_data.Provider>
     );
