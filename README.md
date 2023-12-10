@@ -21,3 +21,8 @@ In response, we proudly present **zXdao**, pioneering a transformative approach 
 
 - ***Enhanced Participation***: By addressing the anonymity concern, zXdao fosters a more inclusive environment, encouraging higher engagement and participation.
 - ***Quorum Assurance***: AI-driven voting mitigates the risk of proposals failing to achieve quorum, promoting effective decision-making within the DAO.
+
+## Deployed at
+- Base: 0x6128A6Feb93ca2D0DD4a7D3A4f3881903e932af9
+- Scroll: 0x92A9cb626a79f22eEF66856A4FFF9737Ed2C8eD2
+- Polygon zkEVM: 0xE743B91C9625e4f7Cf71A213636DAC33b5383dD6
